@@ -16,9 +16,9 @@
     background-color: silver;
 }
 
-.minesweeper-board div {
-    background-image: url(../images/minesweeper/sprite100.gif);
-}
+    .minesweeper-board div {
+        background-image: url(../images/minesweeper/sprite100.gif);
+    }
 
 .minesweeper-gamepiece {
     min-width: 16px;

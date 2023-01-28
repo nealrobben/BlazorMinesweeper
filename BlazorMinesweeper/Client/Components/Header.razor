@@ -1,0 +1,32 @@
+﻿@using BlazorMinesweeper.Client.Models;
+
+<div class="minesweeper-border-topleft"></div>
+
+@for (int i = 1; i < MaxWidth; i++)
+{
+    <div class="minesweeper-border-horizontal"></div>
+}
+
+<div class="minesweeper-border-topright"></div>
+<div class="minesweeper-border-vertical-long"></div>
+<div class="minesweeper-time-@GetPlace(board.NumberOfMinesRemaining, 100)" id="mines_hundreds"></div>
+<div class="minesweeper-time-@GetPlace(board.NumberOfMinesRemaining, 10)" id="mines_tens"></div>
+<div class="minesweeper-time-@GetPlace(board.NumberOfMinesRemaining, 1)" id="mines_ones"></div>
+
+@if (board.Status == GameStatus.Failed)
+{
+    <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+}
+else if (board.Status == GameStatus.Completed)
+{
+    <div class="minesweeper-face-win" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+}
+else
+{
+    <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+}
+
+<div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,100)" id="seconds_hundreds"></div>
+<div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,10)" id="seconds_tens"></div>
+<div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,1)" id="seconds_ones"></div>
+<div class="minesweeper-border-vertical-long"></div>
