@@ -4,77 +4,14 @@
 <div class="minesweeper-game minesweeper-medium">
     <div class="minesweeper-board" @oncontextmenu:preventDefault onmousedown="@(board.Status != GameStatus.Completed ? "faceOooh(event);" : "")" onmouseup="faceSmile();">
 
-        <BlazorMinesweeper.Client.Components.Header board="board" MaxWidth="MaxWidth" />
+        <BlazorMinesweeper.Client.Components.Header board="board" 
+            MaxWidth="MaxWidth" 
+            NumberOfMinesRemaining="board.NumberOfMinesRemaining"
+            SecondsElapsed="board.Stopwatch.Elapsed.Seconds"
+            FaceIconClicked="FaceIconClicked" />
 
-        @for (int i = 0; i <= MaxWidth; i++)
-        {
-            for (int j = 0; j <= MaxHeight; j++)
-            {
-                //Need local variable to avoid problem with variable capturing (Why?)
-                var x = i;
-                var y = j;
+        <BlazorMinesweeper.Client.Components.MineField board="board" MaxWidth="MaxWidth" MaxHeight="MaxHeight" />
 
-                if (x == 0 && y == 0) //Upper-left corner
-                {
-                    <div class="minesweeper-border-jointleft"></div>
-                }
-                else if (x == 0 && y == MaxHeight) //Upper-right corner
-                {
-                    <div class="minesweeper-border-jointright"></div>
-                }
-                else if (x == MaxWidth && y == 0) //Lower-left corner
-                {
-                    <div class="minesweeper-border-bottomleft"></div>
-                }
-                else if (x == MaxWidth && y == MaxHeight) //Lower-right corner
-                {
-                    <div class="minesweeper-border-bottomright"></div>
-                }
-                else if (y == 0 || y == MaxHeight) //Leftmost column
-                {
-                    <div class="minesweeper-border-vertical"></div>
-                }
-                else if (x == 0 || x == MaxWidth) //Rightmost column
-                {
-                    <div class="minesweeper-border-horizontal"></div>
-                }
-                else if (y > 0 && y < MaxHeight)
-                {
-                    var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
-                    
-                    if (currentPanel.IsRevealed)
-                    {
-                        if (currentPanel.IsMine) //Mine
-                        {
-                            <div class="minesweeper-gamepiece minesweeper-mine"></div>
-                        }
-                        else if (currentPanel.NumberOfAdjacentMines == 0) //Blank
-                        {
-                            <div class="minesweeper-gamepiece minesweeper-0"></div>
-                        }
-                        else //Number
-                        {
-                            <div class="minesweeper-gamepiece minesweeper-@currentPanel.NumberOfAdjacentMines">@currentPanel.NumberOfAdjacentMines</div>
-                        }
-                    }
-                    else if (currentPanel.IsFlagged)
-                    {
-                        <div class="minesweeper-gamepiece minesweeper-flagged"
-             @oncontextmenu="@(() => board.FlagPanel(x, y))"
-             @oncontextmenu:preventDefault>
-                        </div>
-                    }
-                    else //Unrevealed
-                    {
-                        <div class="minesweeper-gamepiece minesweeper-unrevealed"
-             @onclick="@(() => board.MakeMove(x, y))"
-             @oncontextmenu="@(() => board.FlagPanel(x, y))"
-             @oncontextmenu:preventDefault>
-                        </div>
-                    }
-                }
-            }
-        }
     </div>
 </div>
 

@@ -9,24 +9,24 @@
 
 <div class="minesweeper-border-topright"></div>
 <div class="minesweeper-border-vertical-long"></div>
-<div class="minesweeper-time-@GetPlace(board.NumberOfMinesRemaining, 100)" id="mines_hundreds"></div>
-<div class="minesweeper-time-@GetPlace(board.NumberOfMinesRemaining, 10)" id="mines_tens"></div>
-<div class="minesweeper-time-@GetPlace(board.NumberOfMinesRemaining, 1)" id="mines_ones"></div>
+<div class="minesweeper-time-@GetPlace(NumberOfMinesRemaining, 100)" id="mines_hundreds"></div>
+<div class="minesweeper-time-@GetPlace(NumberOfMinesRemaining, 10)" id="mines_tens"></div>
+<div class="minesweeper-time-@GetPlace(NumberOfMinesRemaining, 1)" id="mines_ones"></div>
 
-@if (board.Status == GameStatus.Failed)
+@if (GameStatus == GameStatus.Failed)
 {
-    <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+    <div class="minesweeper-face-dead" id="face" style="margin-left:70px; margin-right:70px;" @onclick="FaceIconClicked"></div>
 }
-else if (board.Status == GameStatus.Completed)
+else if (GameStatus == GameStatus.Completed)
 {
-    <div class="minesweeper-face-win" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+    <div class="minesweeper-face-win" id="face" style="margin-left:70px; margin-right:70px;" @onclick="FaceIconClicked"></div>
 }
 else
 {
-    <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="@(() => board.Reset())"></div>
+    <div class="minesweeper-face-smile" id="face" style="margin-left:70px; margin-right:70px;" @onclick="FaceIconClicked"></div>
 }
 
-<div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,100)" id="seconds_hundreds"></div>
-<div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,10)" id="seconds_tens"></div>
-<div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,1)" id="seconds_ones"></div>
+<div class="minesweeper-time-@GetPlace(SecondsElapsed,100)" id="seconds_hundreds"></div>
+<div class="minesweeper-time-@GetPlace(SecondsElapsed,10)" id="seconds_tens"></div>
+<div class="minesweeper-time-@GetPlace(SecondsElapsed,1)" id="seconds_ones"></div>
 <div class="minesweeper-border-vertical-long"></div>

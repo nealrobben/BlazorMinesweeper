@@ -58,4 +58,9 @@ public partial class Index
 
         return ((value % (place * 10)) - (value % place)) / place;
     }
+
+    private void FaceIconClicked()
+    {
+        board.Reset();
+    }
 }
