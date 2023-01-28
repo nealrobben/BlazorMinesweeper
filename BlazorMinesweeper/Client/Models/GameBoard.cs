@@ -1,190 +1,189 @@
 ﻿using System.Diagnostics;
 
-namespace BlazorMinesweeper.Client.Models
+namespace BlazorMinesweeper.Client.Models;
+
+public class GameBoard
 {
-    public class GameBoard
+    public int Width { get; set; } = 16;
+    public int Height { get; set; } = 16;
+    public int MineCount { get; set; } = 40;
+    public GameStatus Status { get; set; }
+    public Stopwatch Stopwatch { get; set; } = new Stopwatch();
+    public List<Panel> Panels { get; set; }
+
+    public int NumberOfMinesRemaining
     {
-        public int Width { get; set; } = 16;
-        public int Height { get; set; } = 16;
-        public int MineCount { get; set; } = 40;
-        public GameStatus Status { get; set; }
-        public Stopwatch Stopwatch { get; set; }
-        public List<Panel> Panels { get; set; }
-
-        public int NumberOfMinesRemaining
+        get
         {
-            get
+            return MineCount - Panels.Where(x => x.IsFlagged).Count();
+        }
+    }
+
+    public void Initialize(int width, int height, int mines)
+    {
+        Width = width;
+        Height = height;
+        MineCount = mines;
+        Panels = new List<Panel>();
+
+        int id = 1;
+        for (int i = 1; i <= height; i++)
+        {
+            for (int j = 1; j <= width; j++)
             {
-                return MineCount - Panels.Where(x => x.IsFlagged).Count();
+                Panels.Add(new Panel(id, j, i));
+                id++;
             }
         }
 
-        public void Initialize(int width, int height, int mines)
+        Status = GameStatus.AwaitingFirstMove;
+    }
+
+    public void Reset()
+    {
+        Initialize(Width, Height, MineCount);
+        Stopwatch= Stopwatch.StartNew();
+    }
+
+    public List<Panel> GetNeighbors(int x, int y)
+    {
+        var nearbyPanels = Panels.Where(panel => panel.X >= (x - 1)
+        && panel.X <= (x + 1)
+        && panel.Y >= (y - 1)
+        && panel.Y >= (y + 1));
+
+        var currentPanel = Panels.Where(panel => panel.X == x && panel.Y == y);
+
+        return nearbyPanels.Except(currentPanel).ToList();
+    }
+
+    public void FirstMove(int x, int y)
+    {
+        Random rand = new Random();
+
+        //For any board, take the user's first revealed panel 
+        // and any neighbors of that panel, and mark them 
+        // as unavailable for mine placement.
+        var neighbors = GetNeighbors(x, y); //Get all neighbors
+
+        //Add the clicked panel to the "unavailable for mines" group.
+        neighbors.Add(Panels.First(z => z.X == x && z.Y == y));
+
+        //Select all panels from set which are available for mine placement.
+        //Order them randomly.
+        var mineList = Panels.Except(neighbors)
+                             .OrderBy(user => rand.Next());
+
+        //Select the first Z random panels.
+        var mineSlots = mineList.Take(MineCount)
+                                .ToList()
+                                .Select(z => new { z.X, z.Y });
+
+        //Place the mines in the randomly selected panels.
+        foreach (var mineCoord in mineSlots)
         {
-            Width = width;
-            Height = height;
-            MineCount = mines;
-            Panels = new List<Panel>();
-
-            int id = 1;
-            for (int i = 1; i <= height; i++)
-            {
-                for (int j = 1; j <= width; j++)
-                {
-                    Panels.Add(new Panel(id, j, i));
-                    id++;
-                }
-            }
-
-            Status = GameStatus.AwaitingFirstMove;
+            Panels.Single(panel => panel.X == mineCoord.X
+                                   && panel.Y == mineCoord.Y)
+                  .IsMine = true;
         }
 
-        public void Reset()
+        //For every panel which is not a mine, 
+        // including the unavailable ones from earlier,
+        // determine and save the adjacent mines.
+        foreach (var openPanel in Panels.Where(panel => !panel.IsMine))
         {
-            Initialize(Width, Height, MineCount);
-            Stopwatch= Stopwatch.StartNew();
+            var nearbyPanels = GetNeighbors(openPanel.X, openPanel.Y);
+            openPanel.NumberOfAdjacentMines = nearbyPanels.Count(z => z.IsMine);
         }
 
-        public List<Panel> GetNeighbors(int x, int y)
+        //Mark the game as started.
+        Status = GameStatus.InProgress;
+        Stopwatch.Start();
+    }
+
+    public void MakeMove(int x, int y)
+    {
+        if (Status == GameStatus.AwaitingFirstMove)
         {
-            var nearbyPanels = Panels.Where(panel => panel.X >= (x - 1)
-            && panel.X <= (x + 1)
-            && panel.Y >= (y - 1)
-            && panel.Y >= (y + 1));
-
-            var currentPanel = Panels.Where(panel => panel.X == x && panel.Y == y);
-
-            return nearbyPanels.Except(currentPanel).ToList();
+            FirstMove(x, y);
         }
 
-        public void FirstMove(int x, int y)
+        RevealPanel(x, y);
+    }
+
+    public void RevealPanel(int x, int y)
+    {
+        //Step 1: Find and reveal the clicked panel
+        var selectedPanel = Panels.First(panel => panel.X == x
+                                                  && panel.Y == y);
+        selectedPanel.Reveal();
+
+        //Step 2: If the panel is a mine, show all mines. Game over!
+        if (selectedPanel.IsMine)
         {
-            Random rand = new Random();
-
-            //For any board, take the user's first revealed panel 
-            // and any neighbors of that panel, and mark them 
-            // as unavailable for mine placement.
-            var neighbors = GetNeighbors(x, y); //Get all neighbors
-
-            //Add the clicked panel to the "unavailable for mines" group.
-            neighbors.Add(Panels.First(z => z.X == x && z.Y == y));
-
-            //Select all panels from set which are available for mine placement.
-            //Order them randomly.
-            var mineList = Panels.Except(neighbors)
-                                 .OrderBy(user => rand.Next());
-
-            //Select the first Z random panels.
-            var mineSlots = mineList.Take(MineCount)
-                                    .ToList()
-                                    .Select(z => new { z.X, z.Y });
-
-            //Place the mines in the randomly selected panels.
-            foreach (var mineCoord in mineSlots)
-            {
-                Panels.Single(panel => panel.X == mineCoord.X
-                                       && panel.Y == mineCoord.Y)
-                      .IsMine = true;
-            }
-
-            //For every panel which is not a mine, 
-            // including the unavailable ones from earlier,
-            // determine and save the adjacent mines.
-            foreach (var openPanel in Panels.Where(panel => !panel.IsMine))
-            {
-                var nearbyPanels = GetNeighbors(openPanel.X, openPanel.Y);
-                openPanel.NumberOfAdjacentMines = nearbyPanels.Count(z => z.IsMine);
-            }
-
-            //Mark the game as started.
-            Status = GameStatus.InProgress;
-            Stopwatch.Start();
+            Status = GameStatus.Failed;
+            RevealAllMines();
+            return;
         }
 
-        public void MakeMove(int x, int y)
+        //Step 3: If the panel is a zero, cascade reveal neighbors.
+        if (selectedPanel.NumberOfAdjacentMines == 0)
         {
-            if (Status == GameStatus.AwaitingFirstMove)
-            {
-                FirstMove(x, y);
-            }
-
-            RevealPanel(x, y);
+            RevealZeros(x, y);
         }
 
-        public void RevealPanel(int x, int y)
+        //Step 4: If this move caused the game to be complete, mark it as such
+        PerformCompletionCheck();
+    }
+
+    private void RevealAllMines()
+    {
+        Panels.Where(x => x.IsMine)
+              .ToList()
+              .ForEach(x => x.IsRevealed = true);
+    }
+
+    public void RevealZeros(int x, int y)
+    {
+        //Get all neighbor panels
+        var neighborPanels = GetNeighbors(x, y)
+                               .Where(panel => !panel.IsRevealed);
+
+        foreach (var neighbor in neighborPanels)
         {
-            //Step 1: Find and reveal the clicked panel
-            var selectedPanel = Panels.First(panel => panel.X == x
-                                                      && panel.Y == y);
-            selectedPanel.Reveal();
+            //For each neighbor panel, reveal that panel.
+            neighbor.IsRevealed = true;
 
-            //Step 2: If the panel is a mine, show all mines. Game over!
-            if (selectedPanel.IsMine)
+            //If the neighbor is also a 0, reveal all of its neighbors too.
+            if (neighbor.NumberOfAdjacentMines == 0)
             {
-                Status = GameStatus.Failed;
-                RevealAllMines();
-                return;
-            }
-
-            //Step 3: If the panel is a zero, cascade reveal neighbors.
-            if (selectedPanel.NumberOfAdjacentMines == 0)
-            {
-                RevealZeros(x, y);
-            }
-
-            //Step 4: If this move caused the game to be complete, mark it as such
-            PerformCompletionCheck();
-        }
-
-        private void RevealAllMines()
-        {
-            Panels.Where(x => x.IsMine)
-                  .ToList()
-                  .ForEach(x => x.IsRevealed = true);
-        }
-
-        public void RevealZeros(int x, int y)
-        {
-            //Get all neighbor panels
-            var neighborPanels = GetNeighbors(x, y)
-                                   .Where(panel => !panel.IsRevealed);
-
-            foreach (var neighbor in neighborPanels)
-            {
-                //For each neighbor panel, reveal that panel.
-                neighbor.IsRevealed = true;
-
-                //If the neighbor is also a 0, reveal all of its neighbors too.
-                if (neighbor.NumberOfAdjacentMines == 0)
-                {
-                    RevealZeros(neighbor.X, neighbor.Y);
-                }
+                RevealZeros(neighbor.X, neighbor.Y);
             }
         }
+    }
 
-        private void PerformCompletionCheck()
+    private void PerformCompletionCheck()
+    {
+        var hiddenPanels = Panels.Where(x => !x.IsRevealed)
+                                 .Select(x => x.ID);
+
+        var minePanels = Panels.Where(x => x.IsMine)
+                               .Select(x => x.ID);
+
+        if (!hiddenPanels.Except(minePanels).Any())
         {
-            var hiddenPanels = Panels.Where(x => !x.IsRevealed)
-                                     .Select(x => x.ID);
-
-            var minePanels = Panels.Where(x => x.IsMine)
-                                   .Select(x => x.ID);
-
-            if (!hiddenPanels.Except(minePanels).Any())
-            {
-                Status = GameStatus.Completed;
-                Stopwatch.Stop();
-            }
+            Status = GameStatus.Completed;
+            Stopwatch.Stop();
         }
+    }
 
-        public void FlagPanel(int x, int y)
+    public void FlagPanel(int x, int y)
+    {
+        if (NumberOfMinesRemaining > 0)
         {
-            if (NumberOfMinesRemaining > 0)
-            {
-                var panel = Panels.Where(z => z.X == x && z.Y == y).First();
+            var panel = Panels.Where(z => z.X == x && z.Y == y).First();
 
-                panel.Flag();
-            }
+            panel.Flag();
         }
     }
 }

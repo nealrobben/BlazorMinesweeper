@@ -1,10 +1,9 @@
-﻿namespace BlazorMinesweeper.Client.Models
+﻿namespace BlazorMinesweeper.Client.Models;
+
+public enum GameStatus
 {
-    public enum GameStatus
-    {
-        AwaitingFirstMove,
-        InProgress,
-        Failed,
-        Completed
-    }
+    AwaitingFirstMove,
+    InProgress,
+    Failed,
+    Completed
 }
