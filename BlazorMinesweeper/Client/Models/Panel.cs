@@ -1,5 +1,8 @@
-﻿namespace BlazorMinesweeper.Client.Models;
+﻿using System.Diagnostics;
 
+namespace BlazorMinesweeper.Client.Models;
+
+[DebuggerDisplay("{X},{Y}")]
 public class Panel
 {
     public int ID { get; set; }

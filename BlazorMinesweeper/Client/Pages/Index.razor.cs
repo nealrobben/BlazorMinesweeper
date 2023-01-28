@@ -6,7 +6,10 @@ namespace BlazorMinesweeper.Client.Pages;
 
 public partial class Index
 {
+    [Inject]
     public IJSRuntime _jsRuntime { get; set; } = default!;
+
+    [Inject]
     public NavigationManager _navManager { get; set; } = default!;
 
     private GameBoard board = new GameBoard();

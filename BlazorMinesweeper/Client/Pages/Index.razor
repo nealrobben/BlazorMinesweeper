@@ -50,13 +50,13 @@
              id="seconds_ones"></div>
         <div class="minesweeper-border-vertical-long"></div>
 
-        @for (int x = 0; x < MaxWidth; x++)
+        @for (int i = 0; i < MaxWidth; i++)
         {
-            Console.WriteLine($"x: {x}");
-
-            for (int y = 0; y < MaxHeight; y++)
+            for (int j = 0; j < MaxHeight; j++)
             {
-                Console.WriteLine($"y: {y}");
+                //Need local variable to avoid problem with variable capturing (Why?)
+                var x = i;
+                var y = j;
 
                 if (x == 0 && y == 0) //Upper-left corner
                 {
