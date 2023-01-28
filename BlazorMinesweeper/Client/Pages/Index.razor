@@ -35,9 +35,9 @@
         <div class="minesweeper-time-@GetPlace(board.Stopwatch.Elapsed.Seconds,1)" id="seconds_ones"></div>
         <div class="minesweeper-border-vertical-long"></div>
 
-        @for (int i = 0; i < MaxWidth; i++)
+        @for (int i = 0; i <= MaxWidth; i++)
         {
-            for (int j = 0; j < MaxHeight; j++)
+            for (int j = 0; j <= MaxHeight; j++)
             {
                 //Need local variable to avoid problem with variable capturing (Why?)
                 var x = i;
