@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BlazorMinesweeper.Client.Models;
+namespace Blazor.Minesweeper.Models;
 
 [DebuggerDisplay("{X},{Y}")]
 public class Panel

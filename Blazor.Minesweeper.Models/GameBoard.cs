@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace BlazorMinesweeper.Client.Models;
+namespace Blazor.Minesweeper.Models;
 
 public class GameBoard
 {
@@ -42,15 +42,15 @@ public class GameBoard
     public void Reset()
     {
         Initialize(Width, Height, MineCount);
-        Stopwatch= Stopwatch.StartNew();
+        Stopwatch = Stopwatch.StartNew();
     }
 
     public List<Panel> GetNeighbors(int x, int y)
     {
-        var nearbyPanels = Panels.Where(panel => panel.X >= (x - 1)
-        && panel.X <= (x + 1)
-        && panel.Y >= (y - 1)
-        && panel.Y >= (y + 1));
+        var nearbyPanels = Panels.Where(panel => panel.X >= x - 1
+        && panel.X <= x + 1
+        && panel.Y >= y - 1
+        && panel.Y >= y + 1);
 
         var currentPanel = Panels.Where(panel => panel.X == x && panel.Y == y);
 

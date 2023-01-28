@@ -1,4 +1,4 @@
-﻿using BlazorMinesweeper.Client.Models;
+﻿using Blazor.Minesweeper.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

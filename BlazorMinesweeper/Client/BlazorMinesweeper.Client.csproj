@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Blazor.Minesweeper.Models\Blazor.Minesweeper.Models.csproj" />
     <ProjectReference Include="..\Shared\BlazorMinesweeper.Shared.csproj" />
   </ItemGroup>
 

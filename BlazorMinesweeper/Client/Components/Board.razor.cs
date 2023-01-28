@@ -1,4 +1,4 @@
-﻿using BlazorMinesweeper.Client.Models;
+﻿using Blazor.Minesweeper.Models;
 
 namespace BlazorMinesweeper.Client.Components
 {

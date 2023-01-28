@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMinesweeper.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMinesweeper.Shared", "BlazorMinesweeper\Shared\BlazorMinesweeper.Shared.csproj", "{2B94D432-4008-41D0-888C-818DBD29C6B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Minesweeper.Models", "Blazor.Minesweeper.Models\Blazor.Minesweeper.Models.csproj", "{5C7CCAA3-0529-491C-AF66-0F9591F26F77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2B94D432-4008-41D0-888C-818DBD29C6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B94D432-4008-41D0-888C-818DBD29C6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B94D432-4008-41D0-888C-818DBD29C6B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
