@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Shared\BlazorMinesweeper.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\minesweeper\" />
+  </ItemGroup>
+
 </Project>

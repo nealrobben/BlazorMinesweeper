@@ -5,15 +5,15 @@
     float: left;
 }
 
+.minesweeper-medium {
+    width: 276px;
+    height: 318px;
+}
+
 .minesweeper-board {
     display: inline-block;
     font-family: Arial;
     background-color: silver;
-}
-
-.minesweeper-medium {
-    width: 276px;
-    height: 318px;
 }
 
 .minesweeper-board div {
