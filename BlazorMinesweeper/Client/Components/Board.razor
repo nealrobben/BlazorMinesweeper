@@ -1,21 +1,20 @@
-﻿@using Blazor.Minesweeper.Models;
-
+﻿
 <div class="minesweeper-game minesweeper-medium">
     <div class="minesweeper-board" @oncontextmenu:preventDefault
          onmousedown="@(board.Status != GameStatus.Completed ? "faceOooh(event);" : "")"
          onmouseup="faceSmile();">
 
-        <BlazorMinesweeper.Client.Components.Header board="board"
-                                                    MaxWidth="MaxWidth"
-                                                    NumberOfMinesRemaining="board.NumberOfMinesRemaining"
-                                                    SecondsElapsed="board.Stopwatch.Elapsed.Seconds"
-                                                    FaceIconClicked="FaceIconClicked" />
+        <Header board="board"
+                MaxWidth="MaxWidth"
+                NumberOfMinesRemaining="board.NumberOfMinesRemaining"
+                SecondsElapsed="board.Stopwatch.Elapsed.Seconds"
+                FaceIconClicked="FaceIconClicked" />
 
-        <BlazorMinesweeper.Client.Components.MineField Panels="board.Panels"
-                                                       MaxWidth="MaxWidth"
-                                                       MaxHeight="MaxHeight"
-                                                       OnLeftClickPanel="@((e) => board.MakeMove(e))"
-                                                       OnRightClickPanel="@((e) => board.FlagPanel(e))" />
+        <MineField Panels="board.Panels"
+                   MaxWidth="MaxWidth"
+                   MaxHeight="MaxHeight"
+                   OnLeftClickPanel="@((e) => board.MakeMove(e))"
+                   OnRightClickPanel="@((e) => board.FlagPanel(e))" />
 
     </div>
 </div>
