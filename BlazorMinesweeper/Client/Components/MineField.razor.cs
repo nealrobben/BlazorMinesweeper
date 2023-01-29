@@ -1,14 +1,10 @@
 ﻿using Blazor.Minesweeper.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace BlazorMinesweeper.Client.Components
 {
     public partial class MineField
     {
-        [Parameter]
-        public GameBoard board { get; set; }
-
         [Parameter]
         public List<Panel> Panels { get; set; }
 
