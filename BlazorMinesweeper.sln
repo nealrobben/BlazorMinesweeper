@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMinesweeper.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMinesweeper.Shared", "BlazorMinesweeper\Shared\BlazorMinesweeper.Shared.csproj", "{2B94D432-4008-41D0-888C-818DBD29C6B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Minesweeper.Models", "Blazor.Minesweeper.Models\Blazor.Minesweeper.Models.csproj", "{5C7CCAA3-0529-491C-AF66-0F9591F26F77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Minesweeper.Models", "Blazor.Minesweeper.Models\Blazor.Minesweeper.Models.csproj", "{5C7CCAA3-0529-491C-AF66-0F9591F26F77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E40EE6F1-BBB5-462C-AAB8-F16652AF9ACC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D37D9FFF-FB7D-43E3-A46A-F4C2DC301C30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Minesweeper.Models.Tests", "Blazor.Minesweeper.Models.Tests\Blazor.Minesweeper.Models.Tests.csproj", "{64D5C4D3-D91E-4113-B0E5-4FD827C1A402}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,20 @@ Global
 		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C7CCAA3-0529-491C-AF66-0F9591F26F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64D5C4D3-D91E-4113-B0E5-4FD827C1A402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64D5C4D3-D91E-4113-B0E5-4FD827C1A402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64D5C4D3-D91E-4113-B0E5-4FD827C1A402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64D5C4D3-D91E-4113-B0E5-4FD827C1A402}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{64BC1D18-67A8-48C3-8EC0-4610E6134E0D} = {E40EE6F1-BBB5-462C-AAB8-F16652AF9ACC}
+		{79B1CBC1-2651-4A2F-B711-E098FFD3C08C} = {E40EE6F1-BBB5-462C-AAB8-F16652AF9ACC}
+		{2B94D432-4008-41D0-888C-818DBD29C6B0} = {E40EE6F1-BBB5-462C-AAB8-F16652AF9ACC}
+		{5C7CCAA3-0529-491C-AF66-0F9591F26F77} = {E40EE6F1-BBB5-462C-AAB8-F16652AF9ACC}
+		{64D5C4D3-D91E-4113-B0E5-4FD827C1A402} = {D37D9FFF-FB7D-43E3-A46A-F4C2DC301C30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B9F6B63-F4C9-4826-96EE-91BE4B4D4736}
