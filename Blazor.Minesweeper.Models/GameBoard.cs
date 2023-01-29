@@ -45,29 +45,29 @@ public class GameBoard
         Stopwatch = Stopwatch.StartNew();
     }
 
-    public List<Panel> GetNeighbors(int x, int y)
+    public List<Panel> GetNeighbors(Coordinate location)
     {
-        var nearbyPanels = Panels.Where(panel => panel.X >= x - 1
-        && panel.X <= x + 1
-        && panel.Y >= y - 1
-        && panel.Y >= y + 1);
+        var nearbyPanels = Panels.Where(panel => panel.Location.X >= location.X - 1
+        && panel.Location.X <= location.X + 1
+        && panel.Location.Y >= location.Y - 1
+        && panel.Location.Y >= location.Y + 1);
 
-        var currentPanel = Panels.Where(panel => panel.X == x && panel.Y == y);
+        var currentPanel = Panels.Where(panel => panel.Location.X == location.X && panel.Location.Y == location.Y);
 
         return nearbyPanels.Except(currentPanel).ToList();
     }
 
-    public void FirstMove(int x, int y)
+    public void FirstMove(Coordinate location)
     {
         Random rand = new Random();
 
         //For any board, take the user's first revealed panel 
         // and any neighbors of that panel, and mark them 
         // as unavailable for mine placement.
-        var neighbors = GetNeighbors(x, y); //Get all neighbors
+        var neighbors = GetNeighbors(location); //Get all neighbors
 
         //Add the clicked panel to the "unavailable for mines" group.
-        neighbors.Add(Panels.First(z => z.X == x && z.Y == y));
+        neighbors.Add(Panels.First(z => z.Location.X == location.X && z.Location.Y == location.Y));
 
         //Select all panels from set which are available for mine placement.
         //Order them randomly.
@@ -77,13 +77,13 @@ public class GameBoard
         //Select the first Z random panels.
         var mineSlots = mineList.Take(MineCount)
                                 .ToList()
-                                .Select(z => new { z.X, z.Y });
+                                .Select(z => new { z.Location.X, z.Location.Y });
 
         //Place the mines in the randomly selected panels.
         foreach (var mineCoord in mineSlots)
         {
-            Panels.Single(panel => panel.X == mineCoord.X
-                                   && panel.Y == mineCoord.Y)
+            Panels.Single(panel => panel.Location.X == mineCoord.X
+                                   && panel.Location.Y == mineCoord.Y)
                   .IsMine = true;
         }
 
@@ -92,7 +92,7 @@ public class GameBoard
         // determine and save the adjacent mines.
         foreach (var openPanel in Panels.Where(panel => !panel.IsMine))
         {
-            var nearbyPanels = GetNeighbors(openPanel.X, openPanel.Y);
+            var nearbyPanels = GetNeighbors(openPanel.Location);
             openPanel.NumberOfAdjacentMines = nearbyPanels.Count(z => z.IsMine);
         }
 
@@ -101,21 +101,21 @@ public class GameBoard
         Stopwatch.Start();
     }
 
-    public void MakeMove(int x, int y)
+    public void MakeMove(Coordinate location)
     {
         if (Status == GameStatus.AwaitingFirstMove)
         {
-            FirstMove(x, y);
+            FirstMove(location);
         }
 
-        RevealPanel(x, y);
+        RevealPanel(location);
     }
 
-    public void RevealPanel(int x, int y)
+    public void RevealPanel(Coordinate location)
     {
         //Step 1: Find and reveal the clicked panel
-        var selectedPanel = Panels.First(panel => panel.X == x
-                                                  && panel.Y == y);
+        var selectedPanel = Panels.First(panel => panel.Location.X == location.X
+                                                  && panel.Location.Y == location.Y);
         selectedPanel.Reveal();
 
         //Step 2: If the panel is a mine, show all mines. Game over!
@@ -129,7 +129,7 @@ public class GameBoard
         //Step 3: If the panel is a zero, cascade reveal neighbors.
         if (selectedPanel.NumberOfAdjacentMines == 0)
         {
-            RevealZeros(x, y);
+            RevealZeros(location);
         }
 
         //Step 4: If this move caused the game to be complete, mark it as such
@@ -143,10 +143,10 @@ public class GameBoard
               .ForEach(x => x.IsRevealed = true);
     }
 
-    public void RevealZeros(int x, int y)
+    public void RevealZeros(Coordinate location)
     {
         //Get all neighbor panels
-        var neighborPanels = GetNeighbors(x, y)
+        var neighborPanels = GetNeighbors(location)
                                .Where(panel => !panel.IsRevealed);
 
         foreach (var neighbor in neighborPanels)
@@ -157,7 +157,7 @@ public class GameBoard
             //If the neighbor is also a 0, reveal all of its neighbors too.
             if (neighbor.NumberOfAdjacentMines == 0)
             {
-                RevealZeros(neighbor.X, neighbor.Y);
+                RevealZeros(neighbor.Location);
             }
         }
     }
@@ -177,11 +177,11 @@ public class GameBoard
         }
     }
 
-    public void FlagPanel(int x, int y)
+    public void FlagPanel(Coordinate location)
     {
         if (NumberOfMinesRemaining > 0)
         {
-            var panel = Panels.Where(z => z.X == x && z.Y == y).First();
+            var panel = Panels.Where(z => z.Location.X == location.X && z.Location.Y == location.Y).First();
 
             panel.Flag();
         }

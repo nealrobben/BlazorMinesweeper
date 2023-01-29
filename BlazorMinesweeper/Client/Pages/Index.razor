@@ -10,7 +10,13 @@
             SecondsElapsed="board.Stopwatch.Elapsed.Seconds"
             FaceIconClicked="FaceIconClicked" />
 
-        <BlazorMinesweeper.Client.Components.MineField board="board" MaxWidth="MaxWidth" MaxHeight="MaxHeight" />
+        <BlazorMinesweeper.Client.Components.MineField 
+            board="board" 
+            Panels="board.Panels"
+            MaxWidth="MaxWidth" 
+            MaxHeight="MaxHeight"
+            OnLeftClickPanel="@((e) => board.MakeMove(e))"
+            OnRightClickPanel="@((e) => board.FlagPanel(e))"/>
 
     </div>
 </div>

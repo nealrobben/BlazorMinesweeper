@@ -7,9 +7,7 @@ public class Panel
 {
     public int ID { get; set; }
 
-    public int X { get; set; }
-
-    public int Y { get; set; }
+    public Coordinate Location { get; private set; }
 
     public bool IsMine { get; set; }
 
@@ -22,8 +20,7 @@ public class Panel
     public Panel(int id, int x, int y)
     {
         ID = id;
-        X = x;
-        Y = y;
+        Location = new Coordinate(x, y);
     }
 
     public void Flag()

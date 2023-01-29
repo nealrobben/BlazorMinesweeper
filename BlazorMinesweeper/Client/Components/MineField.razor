@@ -1,4 +1,6 @@
-﻿@for (int i = 0; i <= MaxWidth; i++)
+﻿@using Blazor.Minesweeper.Models;
+
+@for (int i = 0; i <= MaxWidth; i++)
 {
     for (int j = 0; j <= MaxHeight; j++)
     {
@@ -32,7 +34,7 @@
         }
         else if (y > 0 && y < MaxHeight)
         {
-            var currentPanel = board.Panels.First(m => m.X == x && m.Y == y);
+            var currentPanel = Panels.First(m => m.Location.X == x && m.Location.Y == y);
 
             if (currentPanel.IsRevealed)
             {
@@ -52,15 +54,15 @@
             else if (currentPanel.IsFlagged)
             {
                 <div class="minesweeper-gamepiece minesweeper-flagged"
-     @oncontextmenu="@(() => board.FlagPanel(x, y))"
+     @oncontextmenu="@(() => RightClickPanel(new Coordinate(x,y)))"
      @oncontextmenu:preventDefault>
                 </div>
             }
             else //Unrevealed
             {
                 <div class="minesweeper-gamepiece minesweeper-unrevealed"
-     @onclick="@(() => board.MakeMove(x, y))"
-     @oncontextmenu="@(() => board.FlagPanel(x, y))"
+     @onclick="@(() => LeftClickPanel(new Coordinate(x,y)))"
+     @oncontextmenu="@(() => RightClickPanel(new Coordinate(x,y)))"
      @oncontextmenu:preventDefault>
                 </div>
             }
