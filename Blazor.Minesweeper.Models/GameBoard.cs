@@ -27,11 +27,12 @@ public class GameBoard
         Panels = new List<Panel>();
 
         int id = 1;
+
         for (int i = 1; i <= height; i++)
         {
             for (int j = 1; j <= width; j++)
             {
-                Panels.Add(new Panel(id, j, i));
+                Panels.Add(new Panel(id, new Coordinate(j,i)));
                 id++;
             }
         }

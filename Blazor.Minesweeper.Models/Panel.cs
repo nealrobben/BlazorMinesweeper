@@ -17,10 +17,10 @@ public class Panel
 
     public bool IsFlagged { get; set; }
 
-    public Panel(int id, int x, int y)
+    public Panel(int id, Coordinate location)
     {
         ID = id;
-        Location = new Coordinate(x, y);
+        Location = location;
     }
 
     public void Flag()
