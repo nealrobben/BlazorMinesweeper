@@ -51,7 +51,7 @@ public class GameBoard
         var nearbyPanels = Panels.Where(panel => panel.Location.X >= location.X - 1
         && panel.Location.X <= location.X + 1
         && panel.Location.Y >= location.Y - 1
-        && panel.Location.Y >= location.Y + 1);
+        && panel.Location.Y <= location.Y + 1);
 
         var currentPanel = Panels.Where(panel => panel.Location.X == location.X && panel.Location.Y == location.Y);
 
